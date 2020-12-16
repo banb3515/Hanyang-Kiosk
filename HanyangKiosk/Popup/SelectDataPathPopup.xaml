@@ -9,6 +9,7 @@
         WindowStartupLocation="CenterScreen"
         ResizeMode="NoResize"
         WindowStyle="None"
+        Topmost="True"
         AllowsTransparency="True"
         Background="Transparent"
         Height="200" 
@@ -33,13 +34,13 @@
                     <ColumnDefinition />
                 </Grid.ColumnDefinitions>
 
-                <Button Background="Transparent" Foreground="Transparent" BorderBrush="Transparent" Cursor="Hand" Click="DefaultFolder_Click">
+                <Button Background="Transparent" Foreground="Transparent" BorderBrush="Transparent" Cursor="Hand" Click="DefaultFolder_Click" Margin="10,0,0,0">
                     <Border Background="#E5F0CB24" Height="120" Width="130" CornerRadius="10" BorderBrush="Black" BorderThickness="1">
                         <Image Source="/Hanyang Kiosk;component/Resources/Icon/Folder.png" Height="125" Width="100" />
                     </Border>
                 </Button>
 
-                <Button Grid.Column="1" Background="Transparent" Foreground="Transparent" BorderBrush="Transparent" Cursor="Hand" Click="FindFolder_Click">
+                <Button Grid.Column="1" Background="Transparent" Foreground="Transparent" BorderBrush="Transparent" Cursor="Hand" Click="FindFolder_Click" Margin="0,0,10,0">
                     <Border Background="#E53C998C" Height="120" Width="130" CornerRadius="10" BorderBrush="Black" BorderThickness="1">
                         <Image Source="/Hanyang Kiosk;component/Resources/Icon/Find.png" Height="125" Width="100" />
                     </Border>

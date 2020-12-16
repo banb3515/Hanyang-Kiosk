@@ -5,6 +5,7 @@ using HanyangKiosk.Utils;
 using System;
 using System.Reflection;
 using System.Windows;
+using static HanyangKiosk.MainWindow;
 
 namespace HanyangKiosk
 {
@@ -13,16 +14,13 @@ namespace HanyangKiosk
     /// </summary>
     public partial class App : Application
     {
+        public static MainWindow MainWindowInstance { get; set; }
+
         /// <summary>
         /// 현재 프로그램 이름입니다.
         /// <para>프로그램 이름 변경: Properties > 어셈블리 이름</para>
         /// </summary>
         public static string ProgramName { get; } = Assembly.GetExecutingAssembly().GetName().Name;
-
-        /// <summary>
-        /// Splash 페이지가 보여졌었는지 확인하는 변수입니다.
-        /// </summary>
-        public static bool IsSplash { get; set; } = false;
 
         #region Application_Startup
         /// <summary>
@@ -65,6 +63,10 @@ namespace HanyangKiosk
                 #endregion
 
                 Current.ShutdownMode = ShutdownMode.OnMainWindowClose;
+
+                MainWindowInstance = new MainWindow(PageType.Splash);
+                Current.MainWindow = MainWindowInstance;
+                Current.MainWindow.Show();
 
                 FileManager.WriteLog(string.Format("{0} 실행", ProgramName));
             }

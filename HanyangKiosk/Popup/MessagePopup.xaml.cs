@@ -1,4 +1,6 @@
-﻿using System;
+﻿using HanyangKiosk.Utils;
+
+using System;
 using System.Windows;
 using System.Windows.Media.Imaging;
 
@@ -43,41 +45,48 @@ namespace HanyangKiosk.Popup
         /// <param name="type">메시지 팝업 타입입니다. (기본 값: Ok)</param>
         public MessagePopup(string content, string caption = null, MessagePopupIcon icon = MessagePopupIcon.Default, MessagePopupType type = MessagePopupType.Ok)
         {
-            InitializeComponent();
-
-            Content.Text = content;
-
-            if (caption == null) Caption.Text = App.ProgramName;
-            else Caption.Text = caption;
-
-            switch (icon)
+            try
             {
-                case MessagePopupIcon.Default:
-                    Icon.Source = new BitmapImage(new Uri(@"/Hanyang Kiosk;component/Resources/Icon/Information.png", UriKind.Relative));
-                    break;
-                case MessagePopupIcon.Warning:
-                    Icon.Source = new BitmapImage(new Uri(@"/Hanyang Kiosk;component/Resources/Icon/Warning.png", UriKind.Relative));
-                    break;
+                InitializeComponent();
+
+                MessageContent.Text = content;
+
+                if (caption == null) Caption.Text = App.ProgramName;
+                else Caption.Text = caption;
+
+                switch (icon)
+                {
+                    case MessagePopupIcon.Default:
+                        MessageIcon.Source = new BitmapImage(new Uri(@"/Hanyang Kiosk;component/Resources/Icon/Information.png", UriKind.Relative));
+                        break;
+                    case MessagePopupIcon.Warning:
+                        MessageIcon.Source = new BitmapImage(new Uri(@"/Hanyang Kiosk;component/Resources/Icon/Warning.png", UriKind.Relative));
+                        break;
+                }
+
+                switch (type)
+                {
+                    case MessagePopupType.Yes:
+                        Button1_Border.Visibility = Visibility.Hidden;
+                        Button2.Content = "예";
+                        break;
+                    case MessagePopupType.YesNo:
+                        Button1.Content = "아니요";
+                        Button2.Content = "예";
+                        break;
+                    case MessagePopupType.Ok:
+                        Button1_Border.Visibility = Visibility.Hidden;
+                        Button2.Content = "확인";
+                        break;
+                    case MessagePopupType.OkCancel:
+                        Button1.Content = "취소";
+                        Button2.Content = "확인";
+                        break;
+                }
             }
-
-            switch (type)
+            catch (Exception ex)
             {
-                case MessagePopupType.Yes:
-                    Button1_Border.Visibility = Visibility.Hidden;
-                    Button2.Content = "예";
-                    break;
-                case MessagePopupType.YesNo:
-                    Button1.Content = "아니요";
-                    Button2.Content = "예";
-                    break;
-                case MessagePopupType.Ok:
-                    Button1_Border.Visibility = Visibility.Hidden;
-                    Button2.Content = "확인";
-                    break;
-                case MessagePopupType.OkCancel:
-                    Button1.Content = "취소";
-                    Button2.Content = "확인";
-                    break;
+                FileManager.WriteLog(string.Format("[예외] {0}\n - {1}", ex.Message, ex.StackTrace));
             }
         }
         #endregion

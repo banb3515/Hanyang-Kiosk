@@ -32,8 +32,8 @@
                     <ColumnDefinition Width="85" />
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
-                <Image Name="Icon"  Margin="15,5,0,0" Height="60" Width="60" />
-                <TextBlock Name="Content" Grid.Column="1" FontSize="12" Margin="10,10,15,5" TextWrapping="Wrap" />
+                <Image Name="MessageIcon"  Margin="15,5,0,0" Height="60" Width="60" />
+                <TextBlock Name="MessageContent" Grid.Column="1" FontSize="12" Margin="10,10,15,5" TextWrapping="Wrap" />
             </Grid>
 
             <Line Grid.Row="3" X1="0" Y1="0" X2="280" Y2="0" Stroke="Black" StrokeThickness="1" HorizontalAlignment="Center" Margin="0,5,0,0" />

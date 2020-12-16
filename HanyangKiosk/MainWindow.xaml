@@ -15,6 +15,88 @@
         ResizeMode="NoResize"
         Left="0"
         Top="0"
+        MouseDown="Window_MouseDown"
         KeyDown="Window_KeyDown">
-    <Frame Name="MainFrame" />
+    <Window.Resources>
+        <Style TargetType="{x:Type Button}">
+            <Setter Property="Background" Value="#FF4F92D4"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border Background="{TemplateBinding Background}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#FF2866A4"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
+    
+    <Grid>
+        <Grid>
+            <Frame Name="MainFrame" NavigationUIVisibility="Hidden" />
+        </Grid>
+        
+        <Grid Name="SidebarPanel" Margin="0,100">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="500" />
+                <!-- 시간, 날씨 등 정보 -->
+                <ColumnDefinition Width="*" />
+                <!-- 사용 안함 -->
+                <ColumnDefinition Width="500" />
+                <!-- 페이지 목록 -->
+            </Grid.ColumnDefinitions>
+
+            <Grid Name="LeftPanel" MouseEnter="LeftPanel_MouseEnter" MouseLeave="LeftPanel_MouseLeave">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="65" />
+                </Grid.ColumnDefinitions>
+
+                <Border Background="#7F343434" CornerRadius="0,50,50,0">
+                    <Border.Effect>
+                        <DropShadowEffect ShadowDepth="10" RenderingBias="Performance" BlurRadius="10" Direction="600" />
+                    </Border.Effect>
+
+                    <StackPanel Margin="30,50">
+                        <TextBlock Name="TimeText" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="32" Foreground="White" FontWeight="Bold">
+                            <TextBlock.Effect>
+                                <DropShadowEffect ShadowDepth="2" Direction="360" Color="White" Opacity="0.5" BlurRadius="4"/>
+                            </TextBlock.Effect>
+                        </TextBlock>
+                    </StackPanel>
+                </Border>
+
+                <Button Name="LeftSidebarButton" Tag="1" Cursor="Hand" Grid.Column="1" Click="LeftSidebarButton_Click" Height="60" Background="Transparent" BorderBrush="Transparent" Foreground="Transparent" Margin="5,0,0,0">
+                    <Image Name="LeftSidebarButton_Image" Opacity="0.9" Source="/Hanyang Kiosk;component/Resources/Icon/Left_Button.png" />
+                </Button>
+            </Grid>
+
+            <Grid Name="RightPanel" Grid.Column="2" MouseEnter="RightPanel_MouseEnter" MouseLeave="RightPanel_MouseLeave">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="65" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <Button x:Name="RightSidebarButton" Tag="1" Cursor="Hand" Click="RightSidebarButton_Click" Height="60" Background="Transparent" BorderBrush="Transparent" Foreground="Transparent" Margin="0,0,5,0">
+                    <Image x:Name="RightSidebarButton_Image" Opacity="0.9" Source="/Hanyang Kiosk;component/Resources/Icon/Right_Button.png" />
+                </Button>
+
+                <Border Grid.Column="1" Background="#7F343434" CornerRadius="50,0,0,50">
+                    <Border.Effect>
+                        <DropShadowEffect ShadowDepth="10" RenderingBias="Performance" BlurRadius="10" Direction="300" />
+                    </Border.Effect>
+                    
+                    <StackPanel Margin="30,50">
+                        <TextBlock />
+                    </StackPanel>
+                </Border>
+            </Grid>
+        </Grid>
+    </Grid>
 </Window>

@@ -1,20 +1,10 @@
 ﻿using HanyangKiosk.Utils;
+
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using System.Windows.Threading;
+using static HanyangKiosk.MainWindow;
 
 namespace HanyangKiosk.Pages
 {
@@ -33,7 +23,14 @@ namespace HanyangKiosk.Pages
         #region 생성자
         public SplashPage()
         {
-            InitializeComponent();
+            try
+            {
+                InitializeComponent();
+            }
+            catch (Exception ex)
+            {
+                FileManager.WriteLog(string.Format("[예외] {0}\n - {1}", ex.Message, ex.StackTrace));
+            }
         }
         #endregion
 
@@ -67,7 +64,12 @@ namespace HanyangKiosk.Pages
         {
             try
             {
-                if (count > 13) textTimer.Stop();
+                if (count > 13)
+                {
+                    textTimer.Stop();
+
+                    App.MainWindowInstance.NavigatePage(PageType.Main);
+                }
                 else LoadingText.Text += text[count++];
             }
             catch (Exception ex)
@@ -83,7 +85,14 @@ namespace HanyangKiosk.Pages
         /// </summary>
         private void Init()
         {
-            // 초기화 코드 작성
+            try
+            {
+                // 초기화 코드 작성
+            }
+            catch (Exception ex)
+            {
+                FileManager.WriteLog(string.Format("[예외] {0}\n - {1}", ex.Message, ex.StackTrace));
+            }
         }
         #endregion
     }

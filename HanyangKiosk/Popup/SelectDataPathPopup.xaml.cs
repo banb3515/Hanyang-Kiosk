@@ -1,5 +1,7 @@
 ﻿using HanyangKiosk.Properties;
+using HanyangKiosk.Utils;
 
+using System;
 using System.Windows;
 using System.Windows.Forms;
 
@@ -13,7 +15,14 @@ namespace HanyangKiosk.Popup
         #region 생성자
         public SelectDataPathPopup()
         {
-            InitializeComponent();
+            try
+            {
+                InitializeComponent();
+            }
+            catch (Exception ex)
+            {
+                FileManager.WriteLog(string.Format("[예외] {0}\n - {1}", ex.Message, ex.StackTrace));
+            }
         }
         #endregion
 
@@ -23,8 +32,15 @@ namespace HanyangKiosk.Popup
         /// </summary>
         private void DefaultFolder_Click(object sender, RoutedEventArgs e)
         {
-            Settings.Default.DataPath = @"C:\Hanyang";
-            DialogResult = true;
+            try
+            {
+                Settings.Default.DataPath = @"C:\Hanyang";
+                DialogResult = true;
+            }
+            catch (Exception ex)
+            {
+                FileManager.WriteLog(string.Format("[예외] {0}\n - {1}", ex.Message, ex.StackTrace));
+            }
         }
         #endregion
 
@@ -34,16 +50,23 @@ namespace HanyangKiosk.Popup
         /// </summary>
         private void FindFolder_Click(object sender, RoutedEventArgs e)
         {
-            var dlg = new FolderBrowserDialog()
+            try
             {
-                ShowNewFolderButton = true,
-                Description = "프로그램 데이터 폴더 경로를 선택해주세요."
-            };
+                var dlg = new FolderBrowserDialog()
+                {
+                    ShowNewFolderButton = true,
+                    Description = "프로그램 데이터 폴더 경로를 선택해주세요."
+                };
 
-            if (dlg.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                if (dlg.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                {
+                    Settings.Default.DataPath = dlg.SelectedPath;
+                    DialogResult = true;
+                }
+            }
+            catch (Exception ex)
             {
-                Settings.Default.DataPath = dlg.SelectedPath;
-                DialogResult = true;
+                FileManager.WriteLog(string.Format("[예외] {0}\n - {1}", ex.Message, ex.StackTrace));
             }
         }
         #endregion
