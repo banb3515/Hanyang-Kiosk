@@ -21,7 +21,7 @@ namespace HanyangKiosk.Popup
             }
             catch (Exception ex)
             {
-                FileManager.WriteLog(string.Format("[예외] {0}\n - {1}", ex.Message, ex.StackTrace));
+                FileManager.WriteLog($"[Exception] {ex.Message}\n - {ex.StackTrace}");
             }
         }
         #endregion
@@ -39,7 +39,7 @@ namespace HanyangKiosk.Popup
             }
             catch (Exception ex)
             {
-                FileManager.WriteLog(string.Format("[예외] {0}\n - {1}", ex.Message, ex.StackTrace));
+                FileManager.WriteLog($"[Exception] {ex.Message}\n - {ex.StackTrace}");
             }
         }
         #endregion
@@ -66,7 +66,7 @@ namespace HanyangKiosk.Popup
             }
             catch (Exception ex)
             {
-                FileManager.WriteLog(string.Format("[예외] {0}\n - {1}", ex.Message, ex.StackTrace));
+                FileManager.WriteLog($"[Exception] {ex.Message}\n - {ex.StackTrace}");
             }
         }
         #endregion

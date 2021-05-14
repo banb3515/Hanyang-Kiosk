@@ -24,7 +24,7 @@
             </Border.Effect>
 
             <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
-                <TextBlock Name="LoadingText" Text="" FontSize="36" FontWeight="Bold" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,20,0" />
+                <TextBlock Name="LoadingText" Text="로딩 중 입니다 ..." FontSize="36" FontWeight="Bold" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,20,0" />
                 <custom:CircleProgressBar x:Name="CircleProgress" Diameter="60" Color1="#FF1FC517" Color2="Transparent" Margin="800,0,0,0" />
             </Grid>
         </Border>

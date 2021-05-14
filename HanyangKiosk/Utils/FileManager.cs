@@ -1,7 +1,6 @@
 ﻿using HanyangKiosk.Properties;
 
 using System;
-using System.Diagnostics;
 using System.IO;
 
 namespace HanyangKiosk.Utils
@@ -26,22 +25,22 @@ namespace HanyangKiosk.Utils
 
                 DateTime now = DateTime.Now;
 
-                string folder = string.Format(@"{0}\logs\{1}Y\{2}M", Settings.Default.DataPath, now.ToString("yyyy"), now.ToString("MM"));
+                string folder = $@"{Settings.Default.DataPath}\logs\{now:yyyy}Y\{now.ToString("MM")}M";
 
                 if (!Directory.Exists(folder)) Directory.CreateDirectory(folder);
-                string fileName = string.Format(@"{0}\{1}D.log", folder, now.ToString("dd"));
+                string fileName = $@"{folder}\{now:dd}D.log";
 
-                log = string.Format("[{0}] {1}", now.ToString("HH:mm:ss"), log);
+                log = $"[{now:HH:mm:ss}] {log}";
 
                 StreamWriter sw = File.AppendText(fileName);
                 sw.WriteLine(log);
                 sw.Close();
 
-                Debug.WriteLine(log);
+                Console.WriteLine(log);
             }
             catch (Exception ex)
             {
-                Debug.WriteLine(string.Format("[예외] IsRunning\n - {0}\n - {1}", ex.Message, ex.StackTrace));
+                Console.WriteLine($"[Exception] {ex.Message}\n - {ex.StackTrace}");
             }
         }
         #endregion

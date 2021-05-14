@@ -59,6 +59,7 @@
     <Compile Include="Custom\CircleProgressBar.xaml.cs">
       <DependentUpon>CircleProgressBar.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Models\PageModel.cs" />
     <Compile Include="Pages\MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
@@ -71,9 +72,8 @@
     <Compile Include="Popup\SelectDataPathPopup.xaml.cs">
       <DependentUpon>SelectDataPathPopup.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Utils\Config.cs" />
     <Compile Include="Utils\FileManager.cs" />
-    <Compile Include="Utils\Function.cs" />
+    <Compile Include="Utils\Util.cs" />
     <Page Include="Custom\CircleProgressBar.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -154,6 +154,14 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\Icon\Hanyang.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Icon\Clear_Sky.png" />
+    <Resource Include="Resources\Icon\Clouds.png" />
+    <Resource Include="Resources\Icon\Mist.png" />
+    <Resource Include="Resources\Icon\Rain.png" />
+    <Resource Include="Resources\Icon\Snow.png" />
+    <Resource Include="Resources\Icon\Thunderstorm.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

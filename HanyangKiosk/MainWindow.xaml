@@ -41,7 +41,7 @@
         <Grid>
             <Frame Name="MainFrame" NavigationUIVisibility="Hidden" />
         </Grid>
-        
+
         <Grid Name="SidebarPanel" Margin="0,100">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="500" />
@@ -52,6 +52,7 @@
                 <!-- 페이지 목록 -->
             </Grid.ColumnDefinitions>
 
+            <!--#region 좌측 패널-->
             <Grid Name="LeftPanel" MouseEnter="LeftPanel_MouseEnter" MouseLeave="LeftPanel_MouseLeave">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
@@ -64,11 +65,68 @@
                     </Border.Effect>
 
                     <StackPanel Margin="30,50">
-                        <TextBlock Name="TimeText" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="32" Foreground="White" FontWeight="Bold">
+                        <!--#region 시간-->
+                        <TextBlock Name="TimeText" Text="월요일, 오전 0시 00분" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="32" Foreground="White" FontWeight="Bold">
                             <TextBlock.Effect>
                                 <DropShadowEffect ShadowDepth="2" Direction="360" Color="White" Opacity="0.5" BlurRadius="4"/>
                             </TextBlock.Effect>
                         </TextBlock>
+                        <!--#endregion-->
+
+                        <!--#region 날씨-->
+                        <Border Margin="0,50,0,0" Background="#33FFFFFF" CornerRadius="10">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="20" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+
+                                <Border Name="WeatherColor" Grid.Column="0" Background="Lime" CornerRadius="10,0,0,10" />
+                                <Grid Grid.Column="1" Margin="30,10">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition />
+                                        <ColumnDefinition />
+                                    </Grid.ColumnDefinitions>
+
+                                    <TextBlock Grid.Column="0" Text="날씨" Foreground="White" FontSize="24" FontWeight="Bold" HorizontalAlignment="Center" />
+                                    <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
+                                        <Image Name="WeatherImage" Source="Resources/Icon/Clouds.png" Width="35" />
+                                        <TextBlock Name="WeatherText" Text="0℃" Foreground="White" FontSize="24" FontWeight="Bold" VerticalAlignment="Center" Margin="5,0,0,0">
+                                            <TextBlock.Effect>
+                                                <DropShadowEffect ShadowDepth="1" Direction="360" Color="Black" Opacity="0.5" BlurRadius="4"/>
+                                            </TextBlock.Effect>
+                                        </TextBlock>
+                                    </StackPanel>
+                                </Grid>
+                            </Grid>
+                        </Border>
+                        <!--#endregion-->
+                        
+                        <!--#region 미세먼지-->
+                        <Border Name="FineDustColor" Margin="0,25,0,0" Background="#33FFFFFF" CornerRadius="10">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="20" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+
+                                <Border Grid.Column="0" Background="Red" CornerRadius="10,0,0,10" />
+                                <Grid Grid.Column="1" Margin="30,10">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition />
+                                        <ColumnDefinition />
+                                    </Grid.ColumnDefinitions>
+
+                                    <TextBlock Grid.Column="0" Text="미세먼지" Foreground="White" FontSize="24" FontWeight="Bold" HorizontalAlignment="Center" />
+                                    <TextBlock Name="FineDustText" Grid.Column="1" Text="0" Foreground="White" FontSize="24" FontWeight="Bold" HorizontalAlignment="Right">
+                                        <TextBlock.Effect>
+                                            <DropShadowEffect ShadowDepth="1" Direction="360" Color="Black" Opacity="0.5" BlurRadius="4"/>
+                                        </TextBlock.Effect>
+                                    </TextBlock>
+                                </Grid>
+                            </Grid>
+                        </Border>
+                        <!--#endregion-->
                     </StackPanel>
                 </Border>
 
@@ -76,7 +134,9 @@
                     <Image Name="LeftSidebarButton_Image" Opacity="0.9" Source="/Hanyang Kiosk;component/Resources/Icon/Left_Button.png" />
                 </Button>
             </Grid>
+            <!--#endregion-->
 
+            <!--#region 우측 패널-->
             <Grid Name="RightPanel" Grid.Column="2" MouseEnter="RightPanel_MouseEnter" MouseLeave="RightPanel_MouseLeave">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="65" />
@@ -91,12 +151,13 @@
                     <Border.Effect>
                         <DropShadowEffect ShadowDepth="10" RenderingBias="Performance" BlurRadius="10" Direction="300" />
                     </Border.Effect>
-                    
+
                     <StackPanel Margin="30,50">
                         <TextBlock />
                     </StackPanel>
                 </Border>
             </Grid>
+            <!--#endregion-->
         </Grid>
     </Grid>
 </Window>

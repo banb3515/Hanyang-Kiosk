@@ -2,8 +2,8 @@
 using HanyangKiosk.Utils;
 
 using System;
+using System.Collections.Generic;
 using System.Globalization;
-using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -13,6 +13,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Threading;
 
+using PageType = HanyangKiosk.Models.PageModel.PageType;
+
 namespace HanyangKiosk
 {
     /// <summary>
@@ -20,23 +22,20 @@ namespace HanyangKiosk
     /// </summary>
     public partial class MainWindow : Window
     {
-        #region PageType
-        public enum PageType
-        {
-            Splash,
-            Main
-        }
-        #endregion
-
         /// <summary>
         /// 현재 페이지의 타입을 확인하는 변수입니다.
         /// </summary>
-        PageType NowPage { get; set; }
+        private PageType NowPage { get; set; }
+
+        /// <summary>
+        /// 날씨, 미세먼지 정보 등
+        /// </summary>
+        public Dictionary<string, object> Infos { get; set; }
 
         /// <summary>
         /// 시간 텍스트를 새로고침하는 타이머입니다.
         /// </summary>
-        DispatcherTimer timeTimer;
+        private DispatcherTimer timeTimer;
 
         #region 생성자
         public MainWindow(PageType type)
@@ -47,6 +46,8 @@ namespace HanyangKiosk
 
                 NavigatePage(type);
 
+                Infos = new Dictionary<string, object>();
+
                 timeTimer = new DispatcherTimer();
                 timeTimer.Interval = TimeSpan.FromSeconds(1);
                 timeTimer.Tick += TimeTimer_Tick;
@@ -54,7 +55,7 @@ namespace HanyangKiosk
             }
             catch (Exception ex)
             {
-                FileManager.WriteLog(string.Format("[예외] {0}\n - {1}", ex.Message, ex.StackTrace));
+                FileManager.WriteLog($"[Exception] {ex.Message}\n - {ex.StackTrace}");
             }
         }
         #endregion
@@ -71,7 +72,7 @@ namespace HanyangKiosk
             }
             catch (Exception ex)
             {
-                FileManager.WriteLog(string.Format("[예외] {0}\n - {1}", ex.Message, ex.StackTrace));
+                FileManager.WriteLog($"[Exception] {ex.Message}\n - {ex.StackTrace}");
             }
         }
         #endregion
@@ -89,7 +90,7 @@ namespace HanyangKiosk
             }
             catch (Exception ex)
             {
-                FileManager.WriteLog(string.Format("[예외] {0}\n - {1}", ex.Message, ex.StackTrace));
+                FileManager.WriteLog($"[Exception] {ex.Message}\n - {ex.StackTrace}");
             }
         }
         #endregion
@@ -126,7 +127,7 @@ namespace HanyangKiosk
             }
             catch (Exception ex)
             {
-                FileManager.WriteLog(string.Format("[예외] {0}\n - {1}", ex.Message, ex.StackTrace));
+                FileManager.WriteLog($"[Exception] {ex.Message}\n - {ex.StackTrace}");
             }
         }
         #endregion
@@ -169,7 +170,7 @@ namespace HanyangKiosk
             }
             catch (Exception ex)
             {
-                FileManager.WriteLog(string.Format("[예외] {0}\n - {1}", ex.Message, ex.StackTrace));
+                FileManager.WriteLog($"[Exception] {ex.Message}\n - {ex.StackTrace}");
             }
         }
         #endregion
@@ -190,7 +191,7 @@ namespace HanyangKiosk
             }
             catch (Exception ex)
             {
-                FileManager.WriteLog(string.Format("[예외] {0}\n - {1}", ex.Message, ex.StackTrace));
+                FileManager.WriteLog($"[Exception] {ex.Message}\n - {ex.StackTrace}");
             }
         }
         #endregion
@@ -208,7 +209,7 @@ namespace HanyangKiosk
             }
             catch (Exception ex)
             {
-                FileManager.WriteLog(string.Format("[예외] {0}\n - {1}", ex.Message, ex.StackTrace));
+                FileManager.WriteLog($"[Exception] {ex.Message}\n - {ex.StackTrace}");
                 return null;
             }
         }
@@ -237,7 +238,7 @@ namespace HanyangKiosk
             }
             catch (Exception ex)
             {
-                FileManager.WriteLog(string.Format("[예외] {0}\n - {1}", ex.Message, ex.StackTrace));
+                FileManager.WriteLog($"[Exception] {ex.Message}\n - {ex.StackTrace}");
             }
         }
 
@@ -263,7 +264,7 @@ namespace HanyangKiosk
             }
             catch (Exception ex)
             {
-                FileManager.WriteLog(string.Format("[예외] {0}\n - {1}", ex.Message, ex.StackTrace));
+                FileManager.WriteLog($"[Exception] {ex.Message}\n - {ex.StackTrace}");
             }
         }
         #endregion
@@ -295,7 +296,7 @@ namespace HanyangKiosk
             }
             catch (Exception ex)
             {
-                FileManager.WriteLog(string.Format("[예외] {0}\n - {1}", ex.Message, ex.StackTrace));
+                FileManager.WriteLog($"[Exception] {ex.Message}\n - {ex.StackTrace}");
             }
         }
         #endregion
@@ -327,7 +328,7 @@ namespace HanyangKiosk
             }
             catch (Exception ex)
             {
-                FileManager.WriteLog(string.Format("[예외] {0}\n - {1}", ex.Message, ex.StackTrace));
+                FileManager.WriteLog($"[Exception] {ex.Message}\n - {ex.StackTrace}");
             }
         }
         #endregion
@@ -359,7 +360,7 @@ namespace HanyangKiosk
             }
             catch (Exception ex)
             {
-                FileManager.WriteLog(string.Format("[예외] {0}\n - {1}", ex.Message, ex.StackTrace));
+                FileManager.WriteLog($"[Exception] {ex.Message}\n - {ex.StackTrace}");
             }
         }
         #endregion

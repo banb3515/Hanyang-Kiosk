@@ -5,7 +5,8 @@ using HanyangKiosk.Utils;
 using System;
 using System.Reflection;
 using System.Windows;
-using static HanyangKiosk.MainWindow;
+
+using PageType = HanyangKiosk.Models.PageModel.PageType;
 
 namespace HanyangKiosk
 {
@@ -20,7 +21,7 @@ namespace HanyangKiosk
         /// 현재 프로그램 이름입니다.
         /// <para>프로그램 이름 변경: Properties > 어셈블리 이름</para>
         /// </summary>
-        public static string ProgramName { get; } = Assembly.GetExecutingAssembly().GetName().Name;
+        public static string ProgramName { get { return Assembly.GetExecutingAssembly().GetName().Name; } }
 
         #region Application_Startup
         /// <summary>
@@ -31,7 +32,7 @@ namespace HanyangKiosk
             try
             {
                 #region 중복 실행 감지, 중복 실행 시 프로그램 실행 안함
-                if (Function.IsAlreadyRunning())
+                if (Util.IsRunning())
                 {
                     MessageBox.Show("프로그램이 이미 실행 중입니다.", ProgramName, MessageBoxButton.OK, MessageBoxImage.Warning);
                     Environment.Exit(0);
@@ -47,14 +48,13 @@ namespace HanyangKiosk
                     {
                         if (dataPathPopup != null) dataPathPopup.Close();
 
-                        FileManager.WriteLog(string.Format("데이터 폴더 경로를 지정하였습니다. ({0})", Settings.Default.DataPath));
+                        FileManager.WriteLog($"데이터 폴더 경로를 지정하였습니다. ({Settings.Default.DataPath})");
                     }
                     else
                     {
                         if (dataPathPopup != null) dataPathPopup.Close();
 
                         MessageBox.Show("데이터 폴더 경로를 지정하지 않으면 프로그램을 실행할 수 없습니다.", ProgramName, MessageBoxButton.OK, MessageBoxImage.Warning);
-
                         Environment.Exit(0);
                     }
 
@@ -68,11 +68,11 @@ namespace HanyangKiosk
                 Current.MainWindow = MainWindowInstance;
                 Current.MainWindow.Show();
 
-                FileManager.WriteLog(string.Format("{0} 실행", ProgramName));
+                FileManager.WriteLog($"{ProgramName} 실행");
             }
             catch (Exception ex)
             {
-                FileManager.WriteLog(string.Format("[예외] {0}\n - {1}", ex.Message, ex.StackTrace));
+                FileManager.WriteLog($"[Exception] {ex.Message}\n - {ex.StackTrace}");
             }
         }
         #endregion
