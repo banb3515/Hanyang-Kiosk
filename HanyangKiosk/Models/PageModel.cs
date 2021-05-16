@@ -5,6 +5,7 @@
         #region PageType
         public enum PageType
         {
+            None,
             Splash,
             Main
         }

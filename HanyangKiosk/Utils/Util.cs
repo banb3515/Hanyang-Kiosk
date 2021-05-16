@@ -1,6 +1,10 @@
 ﻿using System;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
+using System.Net;
+using System.Windows.Media;
+using System.Xml;
 
 namespace HanyangKiosk.Utils
 {
@@ -38,6 +42,13 @@ namespace HanyangKiosk.Utils
         }
         #endregion
 
+        #region HexToBrush
+        public static Brush HexToBrush(string hex)
+        {
+            return (Brush)new BrushConverter().ConvertFrom(hex);
+        }
+        #endregion
+
         #region GetWeather
         /// <summary>
         /// 날씨 정보를 가져옵니다. 
@@ -45,27 +56,37 @@ namespace HanyangKiosk.Utils
         /// <returns>
         /// 날씨 정보를 성공적으로 가져오면 True, 가져오지 못하면 False를 반환합니다.
         /// </returns>
-        public static bool GetWeather()
+        public static string GetWeather()
         {
-            string url = "";
+            string result = "";
+            string url = "http://www.kma.go.kr/wid/queryDFSRSS.jsp?zone=1114061500"; // 서울특별시 중구 신당동
 
             try
             {
-                int weather = 0;
+                var request = (HttpWebRequest)WebRequest.Create(url);
+                request.Method = "GET";
 
-                // 날씨 가져오는 코드 작성
+                using (var response = request.GetResponse() as HttpWebResponse)
+                {
+                    var reader = new StreamReader(response.GetResponseStream());
+                    var xmlStr = reader.ReadToEnd();
+                    var xmlDoc = new XmlDocument();
+                    xmlDoc.LoadXml(xmlStr);
+                    var xmlList = xmlDoc.SelectNodes("/rss/channel/item/description/body/data");
+                    var xml = xmlList[xmlList.Count - 1];
+                    var temp = (int)Convert.ToDouble(xml["temp"].InnerText);
+                    var state = xml["wfEn"].InnerText.Replace(' ', '_').Replace('/', '_');
+                    result = $"{temp}:{state}";
 
-                if (App.MainWindowInstance.Infos.ContainsKey("Weather"))
-                    App.MainWindowInstance.Infos.Remove("Weather");
-                App.MainWindowInstance.Infos.Add("Weather", weather);
-                FileManager.WriteLog($"[Weather] 날씨 정보를 가져왔습니다. ({url})");
-                return true;
+                    FileManager.WriteLog($"[Weather] 날씨 정보를 가져왔습니다. {temp} ℃, {xml["wfKor"].InnerText}\n - ({url})");
+                }
             }
             catch (Exception ex)
             {
                 FileManager.WriteLog($"[Weather] 날씨 정보를 가져오지 못했습니다. ({url}) [{ex.Message}]\n - {ex.StackTrace}");
-                return false;
             }
+
+            return result;
         }
         #endregion
 
@@ -76,27 +97,35 @@ namespace HanyangKiosk.Utils
         /// <returns>
         /// 미세먼지 정보를 성공적으로 가져오면 True, 가져오지 못하면 False를 반환합니다.
         /// </returns>
-        public static bool GetFineDust()
+        public static int GetFineDust()
         {
-            string url = "";
+            int result = 0;
+            string url = "http://openapi.seoul.go.kr:8088/526351415162616e3237706e4a4b6b/xml/RealtimeCityAir/1/5/도심권/중구"; // 서울특별시 중구 신당동
 
             try
             {
-                int fineDust = 0;
+                var request = (HttpWebRequest)WebRequest.Create(url);
+                request.Method = "GET";
 
-                // 미세먼지 가져오는 코드 작성
+                using (var response = request.GetResponse() as HttpWebResponse)
+                {
+                    var reader = new StreamReader(response.GetResponseStream());
+                    var xmlStr = reader.ReadToEnd();
+                    var xmlDoc = new XmlDocument();
+                    xmlDoc.LoadXml(xmlStr);
+                    var xmlList = xmlDoc.SelectNodes("/RealtimeCityAir/row");
+                    var xml = xmlList[0];
+                    result = Convert.ToInt32(xml["PM10"].InnerText);
 
-                if (App.MainWindowInstance.Infos.ContainsKey("FineDust"))
-                    App.MainWindowInstance.Infos.Remove("FineDust");
-                App.MainWindowInstance.Infos.Add("FineDust", fineDust);
-                FileManager.WriteLog($"[FineDust] 미세먼지 정보를 가져왔습니다. ({url})");
-                return true;
+                    FileManager.WriteLog($"[FineDust] 미세먼지 정보를 가져왔습니다. {result} ㎍/m³\n - ({url})");
+                }
             }
             catch (Exception ex)
             {
                 FileManager.WriteLog($"[FineDust] 미세먼지 정보를 가져오지 못했습니다. ({url}) [{ex.Message}]\n - {ex.StackTrace}");
-                return false;
             }
+
+            return result;
         }
         #endregion
     }

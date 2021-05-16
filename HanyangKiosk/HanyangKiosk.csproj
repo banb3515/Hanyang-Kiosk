@@ -156,12 +156,16 @@
     <Resource Include="Resources\Icon\Hanyang.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\Icon\Clear_Sky.png" />
-    <Resource Include="Resources\Icon\Clouds.png" />
+    <Resource Include="Resources\Icon\Cloudy.png" />
     <Resource Include="Resources\Icon\Mist.png" />
     <Resource Include="Resources\Icon\Rain.png" />
     <Resource Include="Resources\Icon\Snow.png" />
-    <Resource Include="Resources\Icon\Thunderstorm.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Icon\Clear.png" />
+    <Resource Include="Resources\Icon\Mostly_Cloudy.png" />
+    <Resource Include="Resources\Icon\Rain_Snow.png" />
+    <Resource Include="Resources\Icon\Shower.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

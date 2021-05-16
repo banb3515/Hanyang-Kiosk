@@ -1,8 +1,10 @@
 ﻿using HanyangKiosk.Utils;
 
 using System;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Threading;
 
 using PageType = HanyangKiosk.Models.PageModel.PageType;
 
@@ -14,7 +16,7 @@ namespace HanyangKiosk.Pages
     public partial class SplashPage : Page
     {
         #region 생성자
-        public SplashPage()
+        public SplashPage(Window mainWindow)
         {
             try
             {
@@ -52,10 +54,19 @@ namespace HanyangKiosk.Pages
         {
             try
             {
-                Util.GetWeather();
-                Util.GetFineDust();
+                new Thread(() =>
+                {
+                    Dispatcher.Invoke(DispatcherPriority.Normal, new Action(delegate
+                    {
+                        var weather = Util.GetWeather().Split(':');
+                        var fineDust = Util.GetFineDust();
 
-                App.MainWindowInstance.NavigatePage(PageType.Main);
+                        App.MainWindowInstance.SetWeather(Convert.ToInt32(weather[0]), weather[1]);
+                        App.MainWindowInstance.SetFineDust(fineDust);
+
+                        App.MainWindowInstance.NavigatePage(PageType.Main);
+                    }));
+                }).Start();
             }
             catch (Exception ex)
             {

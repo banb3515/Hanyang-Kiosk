@@ -2,10 +2,10 @@
 using HanyangKiosk.Utils;
 
 using System;
-using System.Collections.Generic;
 using System.Globalization;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
@@ -25,17 +25,17 @@ namespace HanyangKiosk
         /// <summary>
         /// 현재 페이지의 타입을 확인하는 변수입니다.
         /// </summary>
-        private PageType NowPage { get; set; }
-
-        /// <summary>
-        /// 날씨, 미세먼지 정보 등
-        /// </summary>
-        public Dictionary<string, object> Infos { get; set; }
+        private PageType NowPage { get; set; } = PageType.None;
 
         /// <summary>
         /// 시간 텍스트를 새로고침하는 타이머입니다.
         /// </summary>
         private DispatcherTimer timeTimer;
+
+        /// <summary>
+        /// 좌측, 상태 패널을 업데이트하는 타이머입니다.
+        /// </summary>
+        private DispatcherTimer stateTimer;
 
         #region 생성자
         public MainWindow(PageType type)
@@ -46,12 +46,15 @@ namespace HanyangKiosk
 
                 NavigatePage(type);
 
-                Infos = new Dictionary<string, object>();
-
                 timeTimer = new DispatcherTimer();
                 timeTimer.Interval = TimeSpan.FromSeconds(1);
                 timeTimer.Tick += TimeTimer_Tick;
                 timeTimer.Start();
+
+                stateTimer = new DispatcherTimer();
+                stateTimer.Interval = TimeSpan.FromMinutes(30);
+                stateTimer.Tick += StateTimer_Tick;
+                stateTimer.Start();
             }
             catch (Exception ex)
             {
@@ -69,6 +72,27 @@ namespace HanyangKiosk
             try
             {
                 TimeText.Text = DateTime.Now.ToString("dddd, tt h시 m분", new CultureInfo("ko-KR"));
+            }
+            catch (Exception ex)
+            {
+                FileManager.WriteLog($"[Exception] {ex.Message}\n - {ex.StackTrace}");
+            }
+        }
+        #endregion
+
+        #region StateTimer_Tick
+        private void StateTimer_Tick(object sender, EventArgs e)
+        {
+            try
+            {
+                Dispatcher.Invoke(DispatcherPriority.Normal, new Action(delegate
+                {
+                    var weather = Util.GetWeather().Split(':');
+                    var fineDust = Util.GetFineDust();
+
+                    SetWeather(Convert.ToInt32(weather[0]), weather[1]);
+                    SetFineDust(fineDust);
+                }));
             }
             catch (Exception ex)
             {
@@ -104,13 +128,15 @@ namespace HanyangKiosk
         {
             try
             {
+                FileManager.WriteLog($"[Page] {NowPage} -> {type}");
+
                 NowPage = type;
 
                 switch (type)
                 {
                     case PageType.Splash:
                         Background = new ImageBrush(GetBitmapImage("Resources/Image/SplashPage/Background.png"));
-                        MainFrame.Navigate(new SplashPage());
+                        MainFrame.Navigate(new SplashPage(this));
                         
                         SetSidebar(false);
                         break;
@@ -375,6 +401,73 @@ namespace HanyangKiosk
         private void RightPanel_MouseEnter(object sender, MouseEventArgs e) { RightPanel.Tag = 1; }
 
         private void RightPanel_MouseLeave(object sender, MouseEventArgs e) { RightPanel.Tag = 0; }
+        #endregion
+
+        #region SetWeather
+        /// <summary>
+        /// 날씨 UI를 설정합니다.
+        /// </summary>
+        public void SetWeather(int temp, string state)
+        {
+            try
+            {
+                switch (state)
+                {
+                    case "Clear":
+                    case "Cloudy":
+                        WeatherColor.Background = Brushes.Lime;
+                        break;
+                    case "Mostly_Cloudy":
+                    case "Shower":
+                        WeatherColor.Background = Brushes.Orange;
+                        break;
+                    case "Rain":
+                    case "Rain_Snow":
+                    case "Snow":
+                        WeatherColor.Background = Brushes.IndianRed;
+                        break;
+                }
+
+                WeatherText.Text = $"{temp} ";
+                WeatherText.Inlines.Add(new Run("℃") { Foreground = Brushes.LightGoldenrodYellow });
+                WeatherImage.Source = GetBitmapImage($"Resources/Icon/{state}.png");
+            }
+            catch (Exception ex)
+            {
+                FileManager.WriteLog($"[Exception] {ex.Message}\n - {ex.StackTrace}");
+            }
+        }
+        #endregion
+
+        #region SetFineDust
+        /// <summary>
+        /// 미세먼지 UI를 설정합니다.
+        /// </summary>
+        public void SetFineDust(int fineDust)
+        {
+            try
+            {
+                if (fineDust >= 0 && fineDust <= 50)
+                    FineDustColor.Background = Brushes.Lime;
+                else if (fineDust >= 51 && fineDust <= 100)
+                    FineDustColor.Background = Brushes.Yellow;
+                else if (fineDust >= 101 && fineDust <= 150)
+                    FineDustColor.Background = Brushes.Orange;
+                else if (fineDust >= 151 && fineDust <= 200)
+                    FineDustColor.Background = Brushes.IndianRed;
+                else if (fineDust >= 201 && fineDust <= 300)
+                    FineDustColor.Background = Brushes.Red;
+                else if (fineDust >= 301)
+                    FineDustColor.Background = Brushes.MediumVioletRed;
+
+                FineDustText.Text = $"{fineDust} ";
+                FineDustText.Inlines.Add(new Run("㎍/m³") { Foreground = Brushes.LightGoldenrodYellow });
+            }
+            catch (Exception ex)
+            {
+                FileManager.WriteLog($"[Exception] {ex.Message}\n - {ex.StackTrace}");
+            }
+        }
         #endregion
     }
 }

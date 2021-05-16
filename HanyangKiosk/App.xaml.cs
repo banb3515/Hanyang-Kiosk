@@ -62,13 +62,12 @@ namespace HanyangKiosk
                 }
                 #endregion
 
-                Current.ShutdownMode = ShutdownMode.OnMainWindowClose;
+                FileManager.WriteLog($"{ProgramName} 실행");
 
                 MainWindowInstance = new MainWindow(PageType.Splash);
+                Current.ShutdownMode = ShutdownMode.OnMainWindowClose;
                 Current.MainWindow = MainWindowInstance;
                 Current.MainWindow.Show();
-
-                FileManager.WriteLog($"{ProgramName} 실행");
             }
             catch (Exception ex)
             {
